@@ -1,0 +1,60 @@
+<!-- events/event_detail.html -->
+{% extends 'base.html' %}
+
+{% block title %}Event Detail{% endblock %}
+
+{% block content_title %}{{ event.title }}{% endblock %}
+
+{% block content %}
+
+<style>
+    .card {
+        margin-top: 15px;
+    }
+    h3 {
+        margin-top: 15px;
+    }
+
+    .qr-code {
+        max-width: 400px; /* Adjust the max-width to control the size */
+        max-height: 400px; /* Adjust the max-height to control the size */
+        margin-top: 20px; /* Add margin for spacing */
+    }
+
+    .back-button {
+        margin-left: 20px;
+    }
+</style>
+<br>
+    <a href="{% url 'event_list' %}" class="btn btn-primary back-button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-short" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5"/>
+      </svg>Back</a>
+<div class="container">
+    <!-- Back button -->
+    
+
+    <div class="card">
+        <img src="{{ event.image.url }}" class="card-img-top" alt="{{ event.title }} Image">
+        <div class="card-body">
+            <h5 class="card-title">{{ event.title }}</h5>
+            <p class="card-text">Date: {{ event.date }}</p>
+            <p class="card-text">Description: {{ event.description }}</p>
+            <p class="card-text">Location: {{ event.location }}</p>
+        </div>
+    </div>
+
+    {% if qr_code_for_event_list %}
+        <div class="container d-flex justify-content-center">
+            <img src="data:image/png;base64,{{ qr_code_for_event_list }}" class="qr-code" alt="QR Code">
+        </div>
+        <div class="container d-flex justify-content-center">
+            <h4>Scan for Event Materials</h4>
+        </div>
+        <div class="container d-flex justify-content-center">
+            <a href="{% url 'materials_list' event_slug=event.slug %}" class="material-list-link">View Material List</a>
+        </div>
+    {% endif %}
+</div>
+<br>
+
+{% endblock %}

@@ -1,0 +1,14 @@
+<!-- events/material_detail.html -->
+{% extends 'base.html' %}
+
+{% block title %}Material Detail{% endblock %}
+
+{% block content_title %}{{ material.name }}{% endblock %}
+
+{% block content %}
+    <div class="container pt-4">
+        <h5>Material Name: {{ material.name }}</h5>
+        <p>Description: {{ material.description }}</p>
+        <p>File: <a href="{{ material.file.url }}" target="_blank">{{ material.file.name }}</a></p>
+    </div>
+{% endblock %}

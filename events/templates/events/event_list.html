@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Event List{% endblock %}
+
+{% block content_title %}Paperless Event{% endblock %}
+
+{% block content %}
+    <style>
+        .card {
+            margin-top: 15px;
+        }
+
+        .card-img-top {
+            max-height: 200px;  /* Set a max height for the image */
+            object-fit: cover;  /* Ensure the image covers the container */
+        }
+    </style>
+    
+    
+
+    <div class="container">
+        <br>
+        <h1>All Events.</h1>
+        <div class="row">
+            {% for event in events %}
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="card">
+                        <a href="{% url 'event_detail' slug=event.slug %}">
+                            <img src="{{ event.image.url }}" class="card-img-top" alt="{{ event.title }} Image">
+                        </a>
+                        <div class="card-body">
+                            <h5 class="card-title">{{ event.title }}</h5>
+                            <p class="card-text">Date: {{ event.date }}</p>
+                            <p class="card-text">Description: {{ event.description }}</p>
+                            <p class="card-text">Location: {{ event.location }}</p>
+                            <!-- You can add more details here based on your model fields -->
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <br>
+    <br>
+{% endblock %}

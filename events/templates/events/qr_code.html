@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}QR Code{% endblock %}
+
+{% block content_title %}Download QR Code{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <p>Click the link below to download the QR code for the event:</p>
+        <a href="{% static 'media/' %}{{ filename }}" download>Download QR Code</a>
+        <br>
+        <img src="{% static 'media/' %}{{ filename }}" alt="QR Code">
+    </div>
+{% endblock %}

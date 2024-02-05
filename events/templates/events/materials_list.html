@@ -1,0 +1,102 @@
+<!-- events/materials_list.html -->
+{% extends 'base.html' %}
+
+{% block title %}Materials List{% endblock %}
+
+{% block content_title %}Materials{% endblock %}
+
+{% block content %}
+<style>
+    .back-button {
+        margin-left: 20px;
+    }
+
+    /* Add styles for the tooltip */
+    .material-tooltip {
+        position: relative;
+        display: inline-block;
+        cursor: pointer;
+    }
+
+    .material-tooltip .tooltip-content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        color: #333;
+        padding: 10px;
+        z-index: 1;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        width: 200px;
+        top: 50%;
+        left: 100%; /* Position the tooltip to the right of the text */
+        transform: translate(10px, -50%);
+    }
+
+    .material-tooltip:hover .tooltip-content,
+    .tooltip-content.show {
+        display: block;
+    }
+</style>
+<br>
+<a href="{% url 'event_detail' slug=event_slug %}" class="btn btn-primary back-button">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-short" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5"/>
+    </svg> Back
+</a>
+<div class="container pt-4">
+    <h3 class="text-wrap">Materials for Event: {{ event_slug }}</h3>
+    {% if materials %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Download</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for material in materials %}
+                    <tr>
+                        <td class="material-tooltip">
+                            <a href="{% url 'material_detail' pk=material.pk %}">{{ material.name }}</a>
+                            <!-- Tooltip content -->
+                            <div class="tooltip-content">
+                                <img src="{{ material.file.url }}" alt="{{ material.name }}" style="max-width: 100%; max-height: 100%;">
+                            </div>
+                        </td>
+                        <td>
+                            <a href="{{ material.file.url }}" download>
+                                <button type="button" class="btn">Download</button>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="container d-flex justify-content-center mt-5">
+            <a href="{% url 'download_all_materials' event_slug=event_slug %}" class="btn btn-primary">Download All</a>
+        </div>
+    {% else %}
+        <p>No materials available for this event.</p>
+    {% endif %}
+</div>
+
+<script>
+    document.addEventListener('click', function(event) {
+        var tooltips = document.querySelectorAll('.tooltip-content');
+        tooltips.forEach(function(tooltip) {
+            if (!tooltip.contains(event.target)) {
+                tooltip.classList.remove('show');
+            }
+        });
+    });
+
+    document.querySelectorAll('.material-tooltip').forEach(function(tooltip) {
+        tooltip.addEventListener('click', function(event) {
+            event.stopPropagation();
+            var content = this.querySelector('.tooltip-content');
+            content.classList.toggle('show');
+        });
+    });
+</script>
+{% endblock %}
